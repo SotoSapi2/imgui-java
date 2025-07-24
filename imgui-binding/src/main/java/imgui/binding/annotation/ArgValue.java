@@ -36,4 +36,6 @@ public @interface ArgValue {
      * Defines a value to cast with "reinterpret_cast" function.
      */
     String reinterpretCast() default "";
+
+    boolean passAsPointer() default false;
 }

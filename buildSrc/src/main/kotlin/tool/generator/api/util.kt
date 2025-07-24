@@ -29,6 +29,7 @@ const val A_VALUE_CALL_PREFIX = "callPrefix"
 const val A_VALUE_CALL_SUFFIX = "callSuffix"
 const val A_VALUE_STATIC_CAST = "staticCast"
 const val A_VALUE_REINTERPRET_CAST = "reinterpretCast"
+const val A_VALUE_PASS_AS_POINTER = "passAsPointer";
 const val A_VALUE_IS_STATIC = "isStatic"
 const val A_VALUE_CALL_VALUE = "callValue"
 const val A_VALUE_NAME = "name"

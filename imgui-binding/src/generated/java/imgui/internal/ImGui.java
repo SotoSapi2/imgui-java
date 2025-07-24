@@ -6,12 +6,18 @@ import imgui.ImGuiPlatformMonitor;
 import imgui.ImGuiViewport;
 import imgui.ImVec2;
 import imgui.ImVec4;
+
+
+
+
 import imgui.type.ImBoolean;
 import imgui.type.ImFloat;
 import imgui.type.ImInt;
 
+
 public final class ImGui extends imgui.ImGui {
     /*JNI
+        #include "imgui_internal.h"
         #include "_common.h"
         #include "_internal.h"
      */
@@ -783,7 +789,43 @@ public final class ImGui extends imgui.ImGui {
         ImGui::ItemSize(ImRect(bbMinX, bbMinY, bbMaxX, bbMaxY), textBaselineY);
     */
 
-    // TODO: ItemAdd
+    public static boolean itemAdd(final ImRect bb, final int id) {
+        return nItemAdd(bb.min.x, bb.min.y, bb.max.x, bb.max.y, id);
+    }
+
+    public static boolean itemAdd(final float bbMinX, final float bbMinY, final float bbMaxX, final float bbMaxY, final int id) {
+        return nItemAdd(bbMinX, bbMinY, bbMaxX, bbMaxY, id);
+    }
+
+    public static boolean itemAdd(final ImRect bb, final int id, final ImRect navBbArg) {
+        return nItemAdd(bb.min.x, bb.min.y, bb.max.x, bb.max.y, id, navBbArg.min.x, navBbArg.min.y, navBbArg.max.x, navBbArg.max.y);
+    }
+
+    public static boolean itemAdd(final float bbMinX, final float bbMinY, final float bbMaxX, final float bbMaxY, final int id, final float navBbArgMinX, final float navBbArgMinY, final float navBbArgMaxX, final float navBbArgMaxY) {
+        return nItemAdd(bbMinX, bbMinY, bbMaxX, bbMaxY, id, navBbArgMinX, navBbArgMinY, navBbArgMaxX, navBbArgMaxY);
+    }
+
+    public static boolean itemAdd(final ImRect bb, final int id, final ImRect navBbArg, final int itemFlags) {
+        return nItemAdd(bb.min.x, bb.min.y, bb.max.x, bb.max.y, id, navBbArg.min.x, navBbArg.min.y, navBbArg.max.x, navBbArg.max.y, itemFlags);
+    }
+
+    public static boolean itemAdd(final float bbMinX, final float bbMinY, final float bbMaxX, final float bbMaxY, final int id, final float navBbArgMinX, final float navBbArgMinY, final float navBbArgMaxX, final float navBbArgMaxY, final int itemFlags) {
+        return nItemAdd(bbMinX, bbMinY, bbMaxX, bbMaxY, id, navBbArgMinX, navBbArgMinY, navBbArgMaxX, navBbArgMaxY, itemFlags);
+    }
+
+    private static native boolean nItemAdd(float bbMinX, float bbMinY, float bbMaxX, float bbMaxY, int id); /*
+        return ImGui::ItemAdd(ImRect(bbMinX, bbMinY, bbMaxX, bbMaxY), id);
+    */
+
+    private static native boolean nItemAdd(float bbMinX, float bbMinY, float bbMaxX, float bbMaxY, int id, float navBbArgMinX, float navBbArgMinY, float navBbArgMaxX, float navBbArgMaxY); /*
+        ImRect navBbArg_arg2(navBbArgMinX, navBbArgMinY, navBbArgMaxX, navBbArgMaxY);
+        return ImGui::ItemAdd(ImRect(bbMinX, bbMinY, bbMaxX, bbMaxY), id, &navBbArg_arg2);
+    */
+
+    private static native boolean nItemAdd(float bbMinX, float bbMinY, float bbMaxX, float bbMaxY, int id, float navBbArgMinX, float navBbArgMinY, float navBbArgMaxX, float navBbArgMaxY, int itemFlags); /*
+        ImRect navBbArg_arg2(navBbArgMinX, navBbArgMinY, navBbArgMaxX, navBbArgMaxY);
+        return ImGui::ItemAdd(ImRect(bbMinX, bbMinY, bbMaxX, bbMaxY), id, &navBbArg_arg2, static_cast<ImGuiItemFlags>(itemFlags));
+    */
 
     public static boolean itemHoverable(final ImRect bb, final int id, final int itemFlags) {
         return nItemHoverable(bb.min.x, bb.min.y, bb.max.x, bb.max.y, id, itemFlags);
@@ -1014,7 +1056,7 @@ public final class ImGui extends imgui.ImGui {
         return ImGui::DockBuilderAddNode(nodeId, flags);
     */
 
-    /**
+     /**
      * Remove node and all its child, undock all windows.
      */
     public static void dockBuilderRemoveNode(final int nodeId) {
@@ -1041,7 +1083,7 @@ public final class ImGui extends imgui.ImGui {
         ImGui::DockBuilderRemoveNodeDockedWindows(nodeId, clearSettingsRefs);
     */
 
-    /**
+     /**
      * Remove all split/hierarchy. All remaining docked windows will be re-docked to the remaining root node (node_id).
      */
     public static void dockBuilderRemoveNodeChildNodes(final int nodeId) {
@@ -1078,7 +1120,7 @@ public final class ImGui extends imgui.ImGui {
         ImGui::DockBuilderSetNodeSize(nodeId, size);
     */
 
-    /**
+     /**
      * Create 2 child nodes in this parent node.
      */
     public static int dockBuilderSplitNode(final int nodeId, final int splitDir, final float sizeRatioForNodeAtDir, final ImInt outIdAtDir, final ImInt outIdAtOppositeDir) {
@@ -1150,7 +1192,7 @@ public final class ImGui extends imgui.ImGui {
         ImGui::TableSetColumnSortDirection(columnN, static_cast<ImGuiSortDirection>(sortDirection), appendToSortSpecs);
     */
 
-    /**
+     /**
      * May use {@code (TableGetColumnFlags() & ImGuiTableColumnFlags_IsHovered)} instead. Return hovered column.
      * Return -1 when table is not hovered. return columns_count if the unused space at the right of visible columns is hovered.
      */
@@ -1162,7 +1204,7 @@ public final class ImGui extends imgui.ImGui {
         return ImGui::TableGetHoveredColumn();
     */
 
-    /**
+     /**
      * Retrieve *PREVIOUS FRAME* hovered row. This difference with TableGetHoveredColumn() is the reason why this is not public yet.
      */
     public static int tableGetHoveredRow() {
@@ -1545,4 +1587,150 @@ public final class ImGui extends imgui.ImGui {
         return _result;
     */
 
+    // Render helpers
+    // AVOID USING OUTSIDE OF IMGUI.CPP! NOT FOR PUBLIC CONSUMPTION. THOSE FUNCTIONS ARE A MESS. THEIR SIGNATURE AND BEHAVIOR WILL CHANGE, THEY NEED TO BE REFACTORED INTO SOMETHING DECENT.
+    // NB: All position are in absolute pixels coordinates (we are never using window coordi
+
+    public static void renderText(final ImVec2 pos, final String text) {
+        nRenderText(pos.x, pos.y, text);
+    }
+
+    public static void renderText(final float posX, final float posY, final String text) {
+        nRenderText(posX, posY, text);
+    }
+
+    public static void renderText(final ImVec2 pos, final String text, final String textEnd) {
+        nRenderText(pos.x, pos.y, text, textEnd);
+    }
+
+    public static void renderText(final float posX, final float posY, final String text, final String textEnd) {
+        nRenderText(posX, posY, text, textEnd);
+    }
+
+    public static void renderText(final ImVec2 pos, final String text, final String textEnd, final boolean hideTextAfterHash) {
+        nRenderText(pos.x, pos.y, text, textEnd, hideTextAfterHash);
+    }
+
+    public static void renderText(final float posX, final float posY, final String text, final String textEnd, final boolean hideTextAfterHash) {
+        nRenderText(posX, posY, text, textEnd, hideTextAfterHash);
+    }
+
+    private static native void nRenderText(float posX, float posY, String text); /*MANUAL
+        auto text = obj_text == NULL ? NULL : (char*)env->GetStringUTFChars(obj_text, JNI_FALSE);
+        ImVec2 pos = ImVec2(posX, posY);
+        ImGui::RenderText(pos, text);
+        if (text != NULL) env->ReleaseStringUTFChars(obj_text, text);
+    */
+
+    private static native void nRenderText(float posX, float posY, String text, String textEnd); /*MANUAL
+        auto text = obj_text == NULL ? NULL : (char*)env->GetStringUTFChars(obj_text, JNI_FALSE);
+        auto textEnd = obj_textEnd == NULL ? NULL : (char*)env->GetStringUTFChars(obj_textEnd, JNI_FALSE);
+        ImVec2 pos = ImVec2(posX, posY);
+        ImGui::RenderText(pos, text, textEnd);
+        if (text != NULL) env->ReleaseStringUTFChars(obj_text, text);
+        if (textEnd != NULL) env->ReleaseStringUTFChars(obj_textEnd, textEnd);
+    */
+
+    private static native void nRenderText(float posX, float posY, String text, String textEnd, boolean hideTextAfterHash); /*MANUAL
+        auto text = obj_text == NULL ? NULL : (char*)env->GetStringUTFChars(obj_text, JNI_FALSE);
+        auto textEnd = obj_textEnd == NULL ? NULL : (char*)env->GetStringUTFChars(obj_textEnd, JNI_FALSE);
+        ImVec2 pos = ImVec2(posX, posY);
+        ImGui::RenderText(pos, text, textEnd, hideTextAfterHash);
+        if (text != NULL) env->ReleaseStringUTFChars(obj_text, text);
+        if (textEnd != NULL) env->ReleaseStringUTFChars(obj_textEnd, textEnd);
+    */
+
+    public static void renderFrame(final ImVec2 pMin, final ImVec2 pMax, final int fillCol) {
+        nRenderFrame(pMin.x, pMin.y, pMax.x, pMax.y, fillCol);
+    }
+
+    public static void renderFrame(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final int fillCol) {
+        nRenderFrame(pMinX, pMinY, pMaxX, pMaxY, fillCol);
+    }
+
+    public static void renderFrame(final ImVec2 pMin, final ImVec2 pMax, final int fillCol, final boolean borders) {
+        nRenderFrame(pMin.x, pMin.y, pMax.x, pMax.y, fillCol, borders);
+    }
+
+    public static void renderFrame(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final int fillCol, final boolean borders) {
+        nRenderFrame(pMinX, pMinY, pMaxX, pMaxY, fillCol, borders);
+    }
+
+    public static void renderFrame(final ImVec2 pMin, final ImVec2 pMax, final int fillCol, final boolean borders, final float rounding) {
+        nRenderFrame(pMin.x, pMin.y, pMax.x, pMax.y, fillCol, borders, rounding);
+    }
+
+    public static void renderFrame(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final int fillCol, final boolean borders, final float rounding) {
+        nRenderFrame(pMinX, pMinY, pMaxX, pMaxY, fillCol, borders, rounding);
+    }
+
+    private static native void nRenderFrame(float pMinX, float pMinY, float pMaxX, float pMaxY, int fillCol); /*MANUAL
+        ImVec2 pMin = ImVec2(pMinX, pMinY);
+        ImVec2 pMax = ImVec2(pMaxX, pMaxY);
+        ImGui::RenderFrame(pMin, pMax, fillCol);
+    */
+
+    private static native void nRenderFrame(float pMinX, float pMinY, float pMaxX, float pMaxY, int fillCol, boolean borders); /*MANUAL
+        ImVec2 pMin = ImVec2(pMinX, pMinY);
+        ImVec2 pMax = ImVec2(pMaxX, pMaxY);
+        ImGui::RenderFrame(pMin, pMax, fillCol, borders);
+    */
+
+    private static native void nRenderFrame(float pMinX, float pMinY, float pMaxX, float pMaxY, int fillCol, boolean borders, float rounding); /*MANUAL
+        ImVec2 pMin = ImVec2(pMinX, pMinY);
+        ImVec2 pMax = ImVec2(pMaxX, pMaxY);
+        ImGui::RenderFrame(pMin, pMax, fillCol, borders, rounding);
+    */
+
+    public static void renderFrameBorder(final ImVec2 pMin, final ImVec2 pMax) {
+        nRenderFrameBorder(pMin.x, pMin.y, pMax.x, pMax.y);
+    }
+
+    public static void renderFrameBorder(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY) {
+        nRenderFrameBorder(pMinX, pMinY, pMaxX, pMaxY);
+    }
+
+    public static void renderFrameBorder(final ImVec2 pMin, final ImVec2 pMax, final float rounding) {
+        nRenderFrameBorder(pMin.x, pMin.y, pMax.x, pMax.y, rounding);
+    }
+
+    public static void renderFrameBorder(final float pMinX, final float pMinY, final float pMaxX, final float pMaxY, final float rounding) {
+        nRenderFrameBorder(pMinX, pMinY, pMaxX, pMaxY, rounding);
+    }
+
+    private static native void nRenderFrameBorder(float pMinX, float pMinY, float pMaxX, float pMaxY); /*MANUAL
+        ImVec2 pMin = ImVec2(pMinX, pMinY);
+        ImVec2 pMax = ImVec2(pMaxX, pMaxY);
+        ImGui::RenderFrameBorder(pMin, pMax);
+    */
+
+    private static native void nRenderFrameBorder(float pMinX, float pMinY, float pMaxX, float pMaxY, float rounding); /*MANUAL
+        ImVec2 pMin = ImVec2(pMinX, pMinY);
+        ImVec2 pMax = ImVec2(pMaxX, pMaxY);
+        ImGui::RenderFrameBorder(pMin, pMax, rounding);
+    */
+
+    public static void renderNavHighlight(final ImRect bb, final int id) {
+        nRenderNavHighlight(bb.min.x, bb.min.y, bb.max.x, bb.max.y, id);
+    }
+
+    public static void renderNavHighlight(final float bbMinX, final float bbMinY, final float bbMaxX, final float bbMaxY, final int id) {
+        nRenderNavHighlight(bbMinX, bbMinY, bbMaxX, bbMaxY, id);
+    }
+
+    public static void renderNavHighlight(final ImRect bb, final int id, final int flags) {
+        nRenderNavHighlight(bb.min.x, bb.min.y, bb.max.x, bb.max.y, id, flags);
+    }
+
+    public static void renderNavHighlight(final float bbMinX, final float bbMinY, final float bbMaxX, final float bbMaxY, final int id, final int flags) {
+        nRenderNavHighlight(bbMinX, bbMinY, bbMaxX, bbMaxY, id, flags);
+    }
+
+    private static native void nRenderNavHighlight(float bbMinX, float bbMinY, float bbMaxX, float bbMaxY, int id); /*
+        ImGui::RenderNavHighlight(ImRect(bbMinX, bbMinY, bbMaxX, bbMaxY), (ImGuiID)id);
+    */
+
+    private static native void nRenderNavHighlight(float bbMinX, float bbMinY, float bbMaxX, float bbMaxY, int id, int flags); /*
+        ImGui::RenderNavHighlight(ImRect(bbMinX, bbMinY, bbMaxX, bbMaxY), (ImGuiID)id, flags);
+    */
 }

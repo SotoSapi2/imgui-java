@@ -116,7 +116,9 @@ case "$( uname )" in                #(
 esac
 
 CLASSPATH=$APP_HOME/gradle/wrapper/gradle-wrapper.jar
+JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-8.0.452.9-hotspot
 
+die "$JAVA_HOME"
 
 # Determine the Java command to use to start the JVM.
 if [ -n "$JAVA_HOME" ] ; then

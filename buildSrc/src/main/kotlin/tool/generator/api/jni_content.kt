@@ -8,6 +8,11 @@ import spoon.reflect.declaration.ModifierKind
 import spoon.reflect.factory.Factory
 import spoon.reflect.reference.CtTypeReference
 
+private class ParamResult {
+    var inlineParam: MutableMap<Int, CtParameter<*>> = mutableMapOf();
+    var variableParam: MutableMap<Int, CtField<*>> = mutableMapOf();
+}
+
 private fun convertParams2jni(f: Factory, params: List<CtParameter<*>>, defaults: IntArray): List<CtParameter<*>> {
     val result = mutableListOf<CtParameter<*>>()
     for ((index, p) in params.withIndex()) {
@@ -131,7 +136,12 @@ private fun convertParams2jni(f: Factory, params: List<CtParameter<*>>, defaults
 }
 
 private fun joinInBodyParams(params: List<CtParameter<*>>, defaults: IntArray): String {
-    fun param2str(p: CtParameter<*>): String {
+    fun param2str(index: Int, p: CtParameter<*>): String {
+        val argValue = p.getAnnotation(A_NAME_ARG_VALUE)
+        if (argValue?.getValueAsObject(A_VALUE_PASS_AS_POINTER) as? Boolean == true) {
+            return "&${p.simpleName}_arg$index"
+        }
+
         return if (p.type.isPtrClass()) {
             "reinterpret_cast<${p.type.simpleName}*>(${p.simpleName})"
         } else if (p.isPrimitivePtrType()) {
@@ -177,7 +187,7 @@ private fun joinInBodyParams(params: List<CtParameter<*>>, defaults: IntArray): 
             visibleParams += p.getAnnotation(A_NAME_ARG_VALUE)?.getValueAsString(A_VALUE_CALL_VALUE) ?: p.simpleName
             continue
         }
-        var value = param2str(p)
+        var value = param2str(index, p)
         p.getAnnotation(A_NAME_ARG_VALUE)?.let { a ->
             a.getValueAsString(A_VALUE_CALL_VALUE).takeIf(String::isNotEmpty)?.let { v ->
                 value = v
@@ -237,6 +247,22 @@ private fun createMethod(mOrig: CtMethod<*>, params: List<CtParameter<*>>, defau
         buildString {
             val jniCpyReturn = DST_RETURN_TYPE_SET.contains(mOrig.type.simpleName)
             val isStrReturn = mOrig.isType("String")
+
+            for((index, param) in params.withIndex()) {
+                val typeName = param.type.simpleName;
+                val paramName = param.simpleName;
+                val argValue = param.getAnnotation(A_NAME_ARG_VALUE);
+                if (argValue?.getValueAsObject(A_VALUE_PASS_AS_POINTER) as? Boolean == true) {
+                    when(typeName) {
+                        "ImRect" -> {
+                            val field = "$typeName ${paramName}_arg$index";
+                            val constructArg = "(${paramName}MinX, ${paramName}MinY, ${paramName}MaxX, ${paramName}MaxY)";
+
+                            append("$field$constructArg;\n")
+                        }
+                    }
+                }
+            }
 
             if (jniCpyReturn) {
                 append("Jni::${mOrig.type.simpleName}Cpy(env, ")

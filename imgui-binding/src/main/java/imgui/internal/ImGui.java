@@ -17,6 +17,7 @@ import imgui.type.ImInt;
 @BindingSource
 public final class ImGui extends imgui.ImGui {
     /*JNI
+        #include "imgui_internal.h"
         #include "_common.h"
         #include "_internal.h"
      */
@@ -238,7 +239,8 @@ public final class ImGui extends imgui.ImGui {
     @BindingMethod
     public static native void ItemSize(ImRect bb, @OptArg float textBaselineY);
 
-    // TODO: ItemAdd
+    @BindingMethod
+    public static native boolean ItemAdd(ImRect bb, int id, @OptArg @ArgValue(passAsPointer = true) ImRect navBbArg, @OptArg @ArgValue(staticCast = "ImGuiItemFlags") int itemFlags);
 
     @BindingMethod
     public static native boolean ItemHoverable(ImRect bb, int id, @ArgValue(staticCast = "ImGuiItemFlags") int itemFlags);
@@ -428,4 +430,19 @@ public final class ImGui extends imgui.ImGui {
     @BindingMethod
     public static native boolean SplitterBehavior(ImRect bb, int id, @ArgValue(staticCast = "ImGuiAxis") int axis, ImFloat size1, ImFloat size2, float minSize1, float minSize2, @OptArg float hoverExtend, @OptArg float hoverVisibilityDelay, @OptArg int bgCol);
 
+    // Render helpers
+    // AVOID USING OUTSIDE OF IMGUI.CPP! NOT FOR PUBLIC CONSUMPTION. THOSE FUNCTIONS ARE A MESS. THEIR SIGNATURE AND BEHAVIOR WILL CHANGE, THEY NEED TO BE REFACTORED INTO SOMETHING DECENT.
+    // NB: All position are in absolute pixels coordinates (we are never using window coordi
+
+    @BindingMethod
+    public static native void RenderText(ImVec2 pos, String text, @OptArg String textEnd, @OptArg boolean hideTextAfterHash);
+
+    @BindingMethod
+    public static native void RenderFrame(ImVec2 pMin, ImVec2 pMax, int fillCol, @OptArg boolean borders, @OptArg float rounding);
+
+    @BindingMethod
+    public static native void RenderFrameBorder(ImVec2 pMin, ImVec2 pMax, @OptArg float rounding);
+
+    @BindingMethod
+    public static native void RenderNavHighlight(ImRect bb, @ArgValue(callPrefix = "(ImGuiID)") int id, @OptArg int flags);
 }

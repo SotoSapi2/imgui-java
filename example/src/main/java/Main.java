@@ -1,12 +1,13 @@
-import imgui.ImFontConfig;
-import imgui.ImFontGlyphRangesBuilder;
-import imgui.ImGui;
-import imgui.ImGuiIO;
+import imgui.*;
+import imgui.flag.ImGuiCol;
+import imgui.internal.ImGui;
 import imgui.app.Application;
 import imgui.app.Configuration;
 import imgui.flag.ImGuiConfigFlags;
 import imgui.flag.ImGuiInputTextFlags;
 import imgui.flag.ImGuiWindowFlags;
+import imgui.internal.ImRect;
+import imgui.type.ImBoolean;
 import imgui.type.ImString;
 
 import java.io.IOException;
@@ -32,7 +33,7 @@ public class Main extends Application {
         io.setIniFilename(null);                                // We don't want to save .ini file
         io.addConfigFlags(ImGuiConfigFlags.NavEnableKeyboard);  // Enable Keyboard Controls
         io.addConfigFlags(ImGuiConfigFlags.DockingEnable);      // Enable Docking
-        io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);    // Enable Multi-Viewport / Platform Windows
+        //io.addConfigFlags(ImGuiConfigFlags.ViewportsEnable);    // Enable Multi-Viewport / Platform Windows
         io.setConfigViewportsNoTaskBarIcon(true);
 
         initFonts(io);
@@ -73,11 +74,70 @@ public class Main extends Application {
         fontConfig.destroy();
     }
 
+    private boolean testCustomWidget() {
+        String label = "Hello, imgui!";
+        ImGuiStyle style = ImGui.getStyle();
+        int id = ImGui.getID(label);
+        ImVec2 windowPos = ImGui.getWindowPos();
+        ImVec2 cursorPos = ImGui.getCursorPos();
+
+        ImVec2 labelSize = ImGui.calcTextSize(label);
+        ImVec2 size = ImGui.calcItemSize(new ImVec2(), labelSize.x + style.getFramePaddingX() * 2.0f, labelSize.y + style.getFramePaddingY() * 2.0f);
+
+        ImRect bb = new ImRect(
+            cursorPos.plus(windowPos),
+            cursorPos.plus(windowPos).plus(size)
+        );
+
+        ImGui.itemSize(size, style.getFramePaddingY());
+        if(!ImGui.itemAdd(bb, id)) {
+            return false;
+        }
+
+        ImBoolean hovered = new ImBoolean();
+        ImBoolean held = new ImBoolean();
+        boolean pressed = ImGui.buttonBehavior(bb, id, hovered, held);
+        boolean popupOpen = ImGui.isPopupOpen(label);
+
+        if(pressed && !popupOpen)
+        {
+            ImGui.openPopup(label);
+            popupOpen = true;
+        }
+
+        final ImVec2 framePadding = style.getFramePadding();
+        final ImDrawList drawList = ImGui.getWindowDrawList();
+
+        ImVec4 textColor = ImGui.getStyleColorVec4(ImGuiCol.Text);
+        ImVec4 frameColor = ImGui.getStyleColorVec4(
+            (held.get() && hovered.get()) ? ImGuiCol.ButtonActive :
+            hovered.get() ? ImGuiCol.ButtonHovered : ImGuiCol.Button
+        );
+
+        ImGui.renderFrame(
+            bb.min,
+            bb.max,
+            ImGui.getColorU32(frameColor)
+        );
+
+        ImGui.renderText(bb.min.plus(style.getFramePadding()), label);
+
+        if (ImGui.beginPopup(label))
+        {
+            ImGui.text("Hello meow :3");
+            ImGui.endPopup();
+        }
+
+        return popupOpen;
+    }
+
     @Override
     public void process() {
-        if (ImGui.begin("Demo", ImGuiWindowFlags.AlwaysAutoResize)) {
+        if (ImGui.begin("Demo")) {
+
             ImGui.text("OS: [" + System.getProperty("os.name") + "] Arch: [" + System.getProperty("os.arch") + "]");
             ImGui.text("Hello, World! " + FontAwesomeIcons.Smile);
+            testCustomWidget();
             if (ImGui.button(FontAwesomeIcons.Save + " Save")) {
                 count++;
             }
