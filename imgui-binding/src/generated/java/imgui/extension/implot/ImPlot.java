@@ -11758,25 +11758,25 @@ public final class ImPlot {
      /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final short[] values, final int count) {
-        nPlotInfLines(labelId, values, count);
+    public static void plotInfLines(final String labelId, final short[] values) {
+        nPlotInfLines(labelId, values);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final short[] values, final int count, final int flags) {
-        nPlotInfLines(labelId, values, count, flags);
+    public static void plotInfLines(final String labelId, final short[] values, final int flags) {
+        nPlotInfLines(labelId, values, flags);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final short[] values, final int count, final int flags, final int offset) {
-        nPlotInfLines(labelId, values, count, flags, offset);
+    public static void plotInfLines(final String labelId, final short[] values, final int flags, final int offset) {
+        nPlotInfLines(labelId, values, flags, offset);
     }
 
-    private static native void nPlotInfLines(String labelId, short[] values, int count); /*MANUAL
+    private static native void nPlotInfLines(String labelId, short[] values); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (short*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values));
@@ -11784,7 +11784,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, short[] values, int count, int flags); /*MANUAL
+    private static native void nPlotInfLines(String labelId, short[] values, int flags); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (short*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags);
@@ -11792,7 +11792,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, short[] values, int count, int flags, int offset); /*MANUAL
+    private static native void nPlotInfLines(String labelId, short[] values, int flags, int offset); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (short*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags, offset);
@@ -11803,25 +11803,25 @@ public final class ImPlot {
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final int[] values, final int count) {
-        nPlotInfLines(labelId, values, count);
+    public static void plotInfLines(final String labelId, final int[] values) {
+        nPlotInfLines(labelId, values);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final int[] values, final int count, final int flags) {
-        nPlotInfLines(labelId, values, count, flags);
+    public static void plotInfLines(final String labelId, final int[] values, final int flags) {
+        nPlotInfLines(labelId, values, flags);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final int[] values, final int count, final int flags, final int offset) {
-        nPlotInfLines(labelId, values, count, flags, offset);
+    public static void plotInfLines(final String labelId, final int[] values, final int flags, final int offset) {
+        nPlotInfLines(labelId, values, flags, offset);
     }
 
-    private static native void nPlotInfLines(String labelId, int[] values, int count); /*MANUAL
+    private static native void nPlotInfLines(String labelId, int[] values); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (int*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values));
@@ -11829,7 +11829,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, int[] values, int count, int flags); /*MANUAL
+    private static native void nPlotInfLines(String labelId, int[] values, int flags); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (int*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags);
@@ -11837,7 +11837,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, int[] values, int count, int flags, int offset); /*MANUAL
+    private static native void nPlotInfLines(String labelId, int[] values, int flags, int offset); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (int*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags, offset);
@@ -11848,25 +11848,25 @@ public final class ImPlot {
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final long[] values, final int count) {
-        nPlotInfLines(labelId, values, count);
+    public static void plotInfLines(final String labelId, final long[] values) {
+        nPlotInfLines(labelId, values);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final long[] values, final int count, final int flags) {
-        nPlotInfLines(labelId, values, count, flags);
+    public static void plotInfLines(final String labelId, final long[] values, final int flags) {
+        nPlotInfLines(labelId, values, flags);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final long[] values, final int count, final int flags, final int offset) {
-        nPlotInfLines(labelId, values, count, flags, offset);
+    public static void plotInfLines(final String labelId, final long[] values, final int flags, final int offset) {
+        nPlotInfLines(labelId, values, flags, offset);
     }
 
-    private static native void nPlotInfLines(String labelId, long[] values, int count); /*MANUAL
+    private static native void nPlotInfLines(String labelId, long[] values); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (long*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values));
@@ -11874,7 +11874,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, long[] values, int count, int flags); /*MANUAL
+    private static native void nPlotInfLines(String labelId, long[] values, int flags); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (long*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags);
@@ -11882,7 +11882,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, long[] values, int count, int flags, int offset); /*MANUAL
+    private static native void nPlotInfLines(String labelId, long[] values, int flags, int offset); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (long*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags, offset);
@@ -11893,25 +11893,25 @@ public final class ImPlot {
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final float[] values, final int count) {
-        nPlotInfLines(labelId, values, count);
+    public static void plotInfLines(final String labelId, final float[] values) {
+        nPlotInfLines(labelId, values);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final float[] values, final int count, final int flags) {
-        nPlotInfLines(labelId, values, count, flags);
+    public static void plotInfLines(final String labelId, final float[] values, final int flags) {
+        nPlotInfLines(labelId, values, flags);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final float[] values, final int count, final int flags, final int offset) {
-        nPlotInfLines(labelId, values, count, flags, offset);
+    public static void plotInfLines(final String labelId, final float[] values, final int flags, final int offset) {
+        nPlotInfLines(labelId, values, flags, offset);
     }
 
-    private static native void nPlotInfLines(String labelId, float[] values, int count); /*MANUAL
+    private static native void nPlotInfLines(String labelId, float[] values); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (float*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values));
@@ -11919,7 +11919,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, float[] values, int count, int flags); /*MANUAL
+    private static native void nPlotInfLines(String labelId, float[] values, int flags); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (float*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags);
@@ -11927,7 +11927,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, float[] values, int count, int flags, int offset); /*MANUAL
+    private static native void nPlotInfLines(String labelId, float[] values, int flags, int offset); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (float*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags, offset);
@@ -11938,25 +11938,25 @@ public final class ImPlot {
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final double[] values, final int count) {
-        nPlotInfLines(labelId, values, count);
+    public static void plotInfLines(final String labelId, final double[] values) {
+        nPlotInfLines(labelId, values);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final double[] values, final int count, final int flags) {
-        nPlotInfLines(labelId, values, count, flags);
+    public static void plotInfLines(final String labelId, final double[] values, final int flags) {
+        nPlotInfLines(labelId, values, flags);
     }
 
     /**
      * Plots infinite vertical or horizontal lines (e.g. for references or asymptotes).
      */
-    public static void plotInfLines(final String labelId, final double[] values, final int count, final int flags, final int offset) {
-        nPlotInfLines(labelId, values, count, flags, offset);
+    public static void plotInfLines(final String labelId, final double[] values, final int flags, final int offset) {
+        nPlotInfLines(labelId, values, flags, offset);
     }
 
-    private static native void nPlotInfLines(String labelId, double[] values, int count); /*MANUAL
+    private static native void nPlotInfLines(String labelId, double[] values); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (double*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values));
@@ -11964,7 +11964,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, double[] values, int count, int flags); /*MANUAL
+    private static native void nPlotInfLines(String labelId, double[] values, int flags); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (double*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags);
@@ -11972,7 +11972,7 @@ public final class ImPlot {
         if (values != NULL) env->ReleasePrimitiveArrayCritical(obj_values, values, JNI_FALSE);
     */
 
-    private static native void nPlotInfLines(String labelId, double[] values, int count, int flags, int offset); /*MANUAL
+    private static native void nPlotInfLines(String labelId, double[] values, int flags, int offset); /*MANUAL
         auto labelId = obj_labelId == NULL ? NULL : (char*)env->GetStringUTFChars(obj_labelId, JNI_FALSE);
         auto values = obj_values == NULL ? NULL : (double*)env->GetPrimitiveArrayCritical(obj_values, JNI_FALSE);
         ImPlot::PlotInfLines(labelId, &values[0], LEN(values), flags, offset);
