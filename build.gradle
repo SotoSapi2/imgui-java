@@ -1,6 +1,9 @@
 import tool.generator.ast.task.GenerateAst
-
 import java.text.SimpleDateFormat
+
+plugins {
+    id 'maven-publish'
+}
 
 ext {
     lwjglVersion = '3.3.4'
@@ -12,6 +15,19 @@ allprojects {
 
     repositories {
         mavenCentral()
+    }
+
+    apply {
+        plugin("java")
+    }
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+        targetCompatibility = JavaVersion.VERSION_21
+
+        toolchain {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
     }
 
     tasks.withType(Jar).tap {

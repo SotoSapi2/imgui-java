@@ -6,12 +6,6 @@ plugins {
     id 'signing'
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(8))
-    }
-}
-
 dependencies {
     api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
