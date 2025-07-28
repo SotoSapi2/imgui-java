@@ -1,0 +1,7 @@
+before:
+	- ./gradlew clean
+install:
+	- ./gradlew :imgui-app:publishToMavenLocal
+	- ./gradlew :imgui-lwjgl3:publishToMavenLocal
+	- ./gradlew :imgui-binding:publishToMavenLocal
+	- ./gradlew -PdeployType=windows :imgui-binding-natives:publishToMavenLocal
