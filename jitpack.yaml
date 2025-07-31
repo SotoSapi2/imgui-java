@@ -1,8 +1,5 @@
-jdk:
-  - openjdk21
-before_install:
-  - ./gradlew clean
 install:
+  - ./gradlew clean
   - ./gradlew :imgui-app:publishToMavenLocal
   - ./gradlew :imgui-lwjgl3:publishToMavenLocal
   - ./gradlew :imgui-binding:publishToMavenLocal

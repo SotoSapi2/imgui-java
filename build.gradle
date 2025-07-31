@@ -1,10 +1,6 @@
 import tool.generator.ast.task.GenerateAst
 import java.text.SimpleDateFormat
 
-plugins {
-    id 'maven-publish'
-}
-
 ext {
     lwjglVersion = '3.3.4'
 }
@@ -22,11 +18,8 @@ allprojects {
     }
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_21
-        targetCompatibility = JavaVersion.VERSION_21
-
         toolchain {
-            languageVersion.set(JavaLanguageVersion.of(21))
+            languageVersion.set(JavaLanguageVersion.of(8))
         }
     }
 
