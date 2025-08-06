@@ -1,24 +1,26 @@
+System.getenv('GITHUB_USERNAME')
+
 ext.configurePublishing = { packageName, packageDesc, packageVersion ->
     tasks.register('sourcesJar', Jar) {
         it.dependsOn classes
         it.archiveClassifier.set('sources')
         it.from sourceSets.main.allSource
     }
+
     tasks.register('javadocJar', Jar) {
         it.dependsOn javadoc
         it.archiveClassifier.set('javadoc')
         it.from javadoc.destinationDir
     }
+
     publishing {
         repositories {
             maven {
-                name = 'MavenCentral'
-                def releasesRepoUrl = 'https://oss.sonatype.org/service/local/staging/deploy/maven2'
-                def snapshotsRepoUrl = 'https://oss.sonatype.org/content/repositories/snapshots'
-                url = version.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                name = 'Github'
+                url = uri("https://maven.pkg.github.com/${System.getenv('GITHUB_USERNAME')}/imgui-java")
                 credentials {
-                    username = System.getenv('NEXUS_UPD_ID')?.trim() ?: ''
-                    password = System.getenv('NEXUS_UPD_PASS')?.trim() ?: ''
+                    username = Objects.requireNonNull(System.getenv('GITHUB_USERNAME'))
+                    password = Objects.requireNonNull(System.getenv('GITHUB_PACKAGE_KEY'))
                 }
             }
         }
@@ -50,9 +52,9 @@ ext.configurePublishing = { packageName, packageDesc, packageVersion ->
                         }
                     }
                     scm {
-                        connection = 'scm:git:https://github.com/SpaiR/imgui-java.git'
-                        developerConnection = 'scm:git:https://github.com/SpaiR/imgui-java.git'
-                        url = 'https://github.com/SpaiR/imgui-java.git'
+                        connection = 'scm:git:https://github.com/SotoSapi2/imgui-java.git'
+                        developerConnection = 'scm:git:https://github.com/SotoSapi2/imgui-java.git'
+                        url = 'https://github.com/SotoSapi2/imgui-java.git'
                     }
                 }
             }
